@@ -87,6 +87,7 @@ def process_video(video_path):
         f.writelines([f"{item}\n" for item in LHList])
     
     return {
+        'statusCode': 200.
         "body_landmarks": f"/download/BodyLandmarks.txt",
         "right_hand_landmarks": f"/download/RightHandLandmarks.txt",
         "left_hand_landmarks": f"/download/LeftHandLandmarks.txt"
