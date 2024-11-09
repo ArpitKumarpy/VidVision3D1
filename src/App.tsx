@@ -74,15 +74,10 @@ function App() {
         </section>
 
         {/* Team Section */}
-        <section id="team" className="max-w-6xl mx-auto px-4">
+        <section id="team" className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl font-bold mb-6 text-center">Our Team</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-4 gap-4">
             {[
-              {
-                name: "Alex Chen",
-                role: "AI Engineer",
-                image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=200&h=200"
-              },
               {
                 name: "Alex Chen",
                 role: "AI Engineer",
@@ -97,16 +92,21 @@ function App() {
                 name: "Mike Williams",
                 role: "UI/UX Designer",
                 image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200&h=200"
+              },
+              {
+                name: "David Lee",
+                role: "Backend Developer",
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200&h=200"
               }
             ].map((member, index) => (
-              <div key={index} className="bg-gray-800 rounded-lg p-6 text-center">
+              <div key={index} className="bg-gray-800 rounded-lg p-4 text-center">
                 <img
                   src={member.image}
                   alt={member.name}
-                  className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
+                  className="w-20 h-20 rounded-full mx-auto mb-3 object-cover"
                 />
-                <h3 className="text-xl font-semibold mb-2">{member.name}</h3>
-                <p className="text-gray-400">{member.role}</p>
+                <h3 className="text-lg font-semibold mb-1">{member.name}</h3>
+                <p className="text-sm text-gray-400">{member.role}</p>
               </div>
             ))}
           </div>
