@@ -29,7 +29,7 @@ function App() {
         {/* Hero Section */}
         <section className="max-w-7xl mx-auto px-4 text-center mb-16">
           <h1 className="text-5xl font-bold mb-6 text-gradient">
-            Stick Frames
+            VidVISION-3D
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
             Transform your videos into stunning stick figure animations with our advanced AI-powered technology
@@ -79,24 +79,24 @@ function App() {
           <div className="grid grid-cols-4 gap-4">
             {[
               {
-                name: "Alex Chen",
-                role: "AI Engineer",
-                image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=200&h=200"
+                name: "Arpit Kumar",
+                role: "Back-End Developer",
+                image: "https://drive.google.com/file/d/1jjZQmv-z4ZghaDSwz-Y5Qz_rYZLzRAeE/view?usp=sharing"
               },
               {
-                name: "Sarah Johnson",
-                role: "Full Stack Developer",
-                image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200&h=200"
+                name: "Anirudh Singh Tomar",
+                role: "Back-end Developer",
+                image: "https://drive.google.com/file/d/1wAQBUHMdA95hUop6EZFUF-mc5X1uVmot/view?usp=sharing"
               },
               {
-                name: "Mike Williams",
+                name: "Khushi Agarwal",
                 role: "UI/UX Designer",
-                image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200&h=200"
+                image: "https://drive.google.com/file/d/1TJsttcUiqBHHLsrk1PTSuv_Bshw4_-Ke/view?usp=sharing"
               },
               {
-                name: "David Lee",
-                role: "Backend Developer",
-                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200&h=200"
+                name: "Anshul Sharma",
+                role: "Front-end",
+                image: "https://drive.google.com/file/d/1EiiIJKmmzvU5GZ_im4dhA6hnO0Ff0Mnj/view?usp=sharing"
               }
             ].map((member, index) => (
               <div key={index} className="bg-gray-800 rounded-lg p-4 text-center">
