@@ -1,4 +1,4 @@
-#   VidVideo-3D
+#   VidVision-3D
 
 *STRUCTURE:
 
@@ -25,6 +25,11 @@ stick-frames/
 ├── postcss.config.js 
 ├── tailwind.config.js 
 └── eslint.config.js   
+
+run: https://vid-vision3-d1.vercel.app/
+and run the app.py in localhost 5000
+
+# OR
 
 Step-by-Step Setup and Explanation:
 
