@@ -14,7 +14,7 @@ const Header = () => {
       <nav className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <Menu className="h-6 w-6" />
-          <span className="text-xl font-bold">Stick Frames</span>
+          <span className="text-xl font-bold">VidVision3D</span>
         </div>
         <div className="flex items-center space-x-6">
           <button
