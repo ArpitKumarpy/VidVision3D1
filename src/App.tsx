@@ -86,17 +86,17 @@ function App() {
               {
                 name: "Anirudh Singh Tomar",
                 role: "Back-end Developer",
-                image: "https://drive.google.com/file/d/1wAQBUHMdA95hUop6EZFUF-mc5X1uVmot/view?usp=sharing"
+               
               },
               {
                 name: "Khushi Agarwal",
                 role: "UI/UX Designer",
-                image: "https://drive.google.com/file/d/1TJsttcUiqBHHLsrk1PTSuv_Bshw4_-Ke/view?usp=sharing"
+                
               },
               {
                 name: "Anshul Sharma",
                 role: "Front-end",
-                image: "https://drive.google.com/file/d/1EiiIJKmmzvU5GZ_im4dhA6hnO0Ff0Mnj/view?usp=sharing"
+                
               }
             ].map((member, index) => (
               <div key={index} className="bg-gray-800 rounded-lg p-4 text-center">
