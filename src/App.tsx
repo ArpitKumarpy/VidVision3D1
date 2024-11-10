@@ -81,7 +81,7 @@ function App() {
               {
                 name: "Arpit Kumar",
                 role: "Back-End Developer",
-                image: "QmVi9hbZXdgASvTvAJARnLs7S3VgT3pzN2n3eCx2ndaniP"
+                
               },
               {
                 name: "Anirudh Singh Tomar",
@@ -100,11 +100,7 @@ function App() {
               }
             ].map((member, index) => (
               <div key={index} className="bg-gray-800 rounded-lg p-4 text-center">
-                <img
-                  src={member.image}
-                  alt={member.name}
-                  className="w-20 h-20 rounded-full mx-auto mb-3 object-cover"
-                />
+           
                 <h3 className="text-lg font-semibold mb-1">{member.name}</h3>
                 <p className="text-sm text-gray-400">{member.role}</p>
               </div>
