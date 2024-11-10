@@ -81,7 +81,7 @@ function App() {
               {
                 name: "Arpit Kumar",
                 role: "Back-End Developer",
-                image: "https://drive.google.com/file/d/1jjZQmv-z4ZghaDSwz-Y5Qz_rYZLzRAeE/view?usp=sharing"
+                image: "QmVi9hbZXdgASvTvAJARnLs7S3VgT3pzN2n3eCx2ndaniP"
               },
               {
                 name: "Anirudh Singh Tomar",
