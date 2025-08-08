@@ -1,5 +1,7 @@
 #   VidVision-3D
 #TUTORIAL (WATCH FIRST) : https://www.loom.com/share/4398d9094fce44f9974360884a161361
+
+
 *STRUCTURE:
 
 stick-frames/
