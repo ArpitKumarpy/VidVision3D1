@@ -14,7 +14,7 @@ const LandmarkBox: React.FC<LandmarkBoxProps> = ({ title, data }) => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${title.toLowerCase().replace(' ', '_')}.txt`;
+    a.download = `AnimationFile.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
