@@ -25,7 +25,7 @@ const UploadSection: React.FC<UploadProps> = ({ onLandmarksReceived }) => {
   const [serverStatus, setServerStatus] = useState<'checking' | 'running' | 'not-running'>('checking');
 
   useEffect(() => {
-    fetch('https://vidvision3d-backend.onrender.com/download/test.txt')
+    fetch('/api/download/test.txt')
       .then(() => setServerStatus('running'))
       .catch(() => setServerStatus('not-running'));
   }, []);
@@ -80,7 +80,7 @@ const UploadSection: React.FC<UploadProps> = ({ onLandmarksReceived }) => {
       const formData = new FormData();
       formData.append('video', file);
 
-      const response = await fetch('https://vidvision3d-backend.onrender.com/upload', {
+      const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
       });
@@ -93,9 +93,9 @@ const UploadSection: React.FC<UploadProps> = ({ onLandmarksReceived }) => {
       
       try {
         const [bodyData, leftHandData, rightHandData] = await Promise.all([
-          fetch(`https://vidvision3d-backend.onrender.com${data.body_landmarks}`).then(res => res.text()),
-          fetch(`https://vidvision3d-backend.onrender.com${data.left_hand_landmarks}`).then(res => res.text()),
-          fetch(`https://vidvision3d-backend.onrender.com${data.right_hand_landmarks}`).then(res => res.text())
+          fetch(`/api${data.body_landmarks}`).then(res => res.text()),
+          fetch(`/api${data.left_hand_landmarks}`).then(res => res.text()),
+          fetch(`/api${data.right_hand_landmarks}`).then(res => res.text())
         ]);
 
         onLandmarksReceived({
