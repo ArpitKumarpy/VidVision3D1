@@ -7,6 +7,8 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "https://vidvision3d-backend.onrender.com/api/:splat"
+  to = "https://api.netlify.com/api/v1/badges/d0587505-2462-4d10-bc8a-b1be4a04b7ba/deploy-status)](https://app.netlify.com/projects/splendid-travesseiro-6824b5/deploys)
+
+"
   status = 200
   force = true
