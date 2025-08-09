@@ -7,6 +7,6 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "https://vidvision3d1-2.onrender.com"
+  to = "https://vidvision3d1-2.onrender.com/api/:splat"
   status = 200
   force = true
