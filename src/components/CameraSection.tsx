@@ -94,7 +94,7 @@ const CameraSection: React.FC<CameraSectionProps> = ({ onLandmarksReceived }) =>
       const formData = new FormData();
       formData.append('video', recordedBlob, 'recorded-video.webm');
 
-      const response = await fetch('https://vidvision3d-backend.onrender.com/upload', {
+      const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
       });
@@ -106,9 +106,9 @@ const CameraSection: React.FC<CameraSectionProps> = ({ onLandmarksReceived }) =>
       const data = await response.json();
       
       const [bodyData, leftHandData, rightHandData] = await Promise.all([
-        fetch(`https://vidvision3d-backend.onrender.com${data.body_landmarks}`).then(res => res.text()),
-        fetch(`https://vidvision3d-backend.onrender.com${data.left_hand_landmarks}`).then(res => res.text()),
-        fetch(`https://vidvision3d-backend.onrender.com${data.right_hand_landmarks}`).then(res => res.text())
+        fetch(`/api${data.body_landmarks}`).then(res => res.text()),
+        fetch(`/api${data.left_hand_landmarks}`).then(res => res.text()),
+        fetch(`/api${data.right_hand_landmarks}`).then(res => res.text())
       ]);
 
       onLandmarksReceived({
