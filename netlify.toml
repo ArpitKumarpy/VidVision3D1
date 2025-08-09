@@ -7,6 +7,6 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "https://your-flask-app.herokuapp.com/api/:splat"
+  to = "https://vidvision3d-backend.onrender.com/api/:splat"
   status = 200
   force = true
