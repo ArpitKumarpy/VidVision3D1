@@ -1,12 +1,12 @@
 [build]
-  command = "npm run build"  # This tells Netlify to run npm run build during deployment
-  publish = "dist"           # This is the directory Netlify will serve after the build
+  command = "npm run build" # This tells Netlify to run npm run build during deployment
+  publish = "dist"          # This is the directory Netlify will serve after the build
 
 [build.environment]
-  NODE_ENV = "production"    # Optional: Set environment variable if needed
+  NODE_ENV = "production"   # Optional: Set environment variable if needed
 
 [[redirects]]
   from = "/api/*"
   to = "https://vidvision3d1-2.onrender.com/api/:splat"
   status = 200
-  force = true
+  force = true
