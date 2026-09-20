@@ -16,22 +16,36 @@ const Header = () => {
           <Menu className="h-6 w-6" />
           <span className="text-xl font-bold">VidVision3D</span>
         </div>
-        <div className="flex items-center space-x-6">
-          <button
-            onClick={handleUnityDownload}
-            className="flex items-center space-x-1 bg-primary-600 hover:bg-primary-700 px-3 py-1.5 rounded-md transition-colors"
+        <div className="flex items-center space-x-5">
+          <a
+            href="#player"
+            className="flex items-center space-x-1.5 text-cyan-400 hover:text-cyan-300 font-medium transition-colors text-sm"
           >
-            <Download className="h-5 w-5" />
-            <span>DOWNLOAD UNITY FILE</span>
-          </button>
-          <a href="#about" className="flex items-center space-x-1 hover:text-blue-400 transition-colors">
-            <Info className="h-5 w-5" />
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+            <span>3D Player</span>
+          </a>
+          <a
+            href="#create"
+            className="hover:text-blue-400 transition-colors text-sm"
+          >
+            <span>Upload / Record</span>
+          </a>
+          <a href="#about" className="flex items-center space-x-1 hover:text-blue-400 transition-colors text-sm">
+            <Info className="h-4 w-4" />
             <span>About</span>
           </a>
-          <a href="#team" className="flex items-center space-x-1 hover:text-blue-400 transition-colors">
-            <Users className="h-5 w-5" />
+          <a href="#team" className="flex items-center space-x-1 hover:text-blue-400 transition-colors text-sm">
+            <Users className="h-4 w-4" />
             <span>Team</span>
           </a>
+          <button
+            onClick={handleUnityDownload}
+            className="flex items-center space-x-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg transition-colors text-xs"
+            title="Download optional raw Unity project if needed"
+          >
+            <Download className="h-4 w-4" />
+            <span>Unity Project (Optional)</span>
+          </button>
         </div>
       </nav>
 

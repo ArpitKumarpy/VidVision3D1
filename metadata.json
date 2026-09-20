@@ -1,0 +1,10 @@
+{
+  "name": "VidVision 3D",
+  "description": "Transform videos into 3D stick figure animations and extract body and hand landmarks using AI.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

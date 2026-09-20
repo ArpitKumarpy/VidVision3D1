@@ -1,17 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Upload, AlertCircle, Loader2 } from 'lucide-react';
-
-interface UploadResponse {
-  body_landmarks: string;
-  right_hand_landmarks: string;
-  left_hand_landmarks: string;
-}
-
-interface LandmarkData {
-  body: string | null;
-  leftHand: string | null;
-  rightHand: string | null;
-}
+import React, { useState } from 'react';
+import { Upload, AlertCircle, Loader2, Sparkles, CheckCircle, FileText } from 'lucide-react';
+import { processVideoToLandmarks, LandmarkData, ExtractionProgress } from '../api';
 
 interface UploadProps {
   onLandmarksReceived: (landmarks: LandmarkData) => void;
@@ -22,20 +11,14 @@ const UploadSection: React.FC<UploadProps> = ({ onLandmarksReceived }) => {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [serverStatus, setServerStatus] = useState<'checking' | 'running' | 'not-running'>('checking');
-
-  useEffect(() => {
-    fetch('/api/download/test.txt')
-      .then(() => setServerStatus('running'))
-      .catch(() => setServerStatus('not-running'));
-  }, []);
+  const [progress, setProgress] = useState<ExtractionProgress | null>(null);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
+    if (e.type === 'dragenter' || e.type === 'dragover') {
       setDragActive(true);
-    } else if (e.type === "dragleave") {
+    } else if (e.type === 'dragleave') {
       setDragActive(false);
     }
   };
@@ -44,90 +27,90 @@ const UploadSection: React.FC<UploadProps> = ({ onLandmarksReceived }) => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    
-    if (serverStatus !== 'running') {
-      setError('Flask server is not running. Please start the server first.');
-      return;
-    }
-    
+
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      const file = e.dataTransfer.files[0];
-      setFile(file);
-      await uploadFile(file);
+      const droppedFile = e.dataTransfer.files[0];
+      setFile(droppedFile);
+      await processFile(droppedFile);
     }
   };
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    
-    if (serverStatus !== 'running') {
-      setError('Flask server is not running. Please start the server first.');
-      return;
-    }
-    
+
     if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setFile(file);
-      await uploadFile(file);
+      const selectedFile = e.target.files[0];
+      setFile(selectedFile);
+      await processFile(selectedFile);
     }
   };
 
-  const uploadFile = async (file: File) => {
+  const processFile = async (selectedFile: File) => {
     setUploading(true);
     setError(null);
+    setProgress({
+      currentFrame: 0,
+      totalFrames: 100,
+      percent: 5,
+      status: 'Preparing video for AI processing...',
+    });
 
     try {
-      const formData = new FormData();
-      formData.append('video', file);
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
+      const landmarks = await processVideoToLandmarks(selectedFile, selectedFile.name, (p) => {
+        setProgress(p);
       });
 
-      if (!response.ok) {
-        throw new Error(`Upload failed: ${response.statusText}`);
-      }
-
-      const data: UploadResponse = await response.json();
-      
-      try {
-        const [bodyData, leftHandData, rightHandData] = await Promise.all([
-          fetch(`/api${data.body_landmarks}`).then(res => res.text()),
-          fetch(`/api${data.left_hand_landmarks}`).then(res => res.text()),
-          fetch(`/api${data.right_hand_landmarks}`).then(res => res.text())
-        ]);
-
-        onLandmarksReceived({
-          body: bodyData,
-          leftHand: leftHandData,
-          rightHand: rightHandData
-        });
-      } catch (err) {
-        throw new Error('Failed to fetch landmark data');
-      }
+      onLandmarksReceived(landmarks);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError(err instanceof Error ? err.message : 'An error occurred during video processing');
     } finally {
       setUploading(false);
+      setProgress(null);
+    }
+  };
+
+  const handleLoadSampleVideo = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      setUploading(true);
+      setError(null);
+      setProgress({
+        currentFrame: 0,
+        totalFrames: 100,
+        percent: 5,
+        status: 'Fetching sample video...',
+      });
+      const res = await fetch('/sample-video.mp4');
+      if (!res.ok) throw new Error('Sample video file not reachable');
+      const blob = await res.blob();
+      const sampleFile = new File([blob], 'sample-video.mp4', { type: 'video/mp4' });
+      setFile(sampleFile);
+      await processFile(sampleFile);
+    } catch (err) {
+      setError('Failed to load sample video: ' + (err instanceof Error ? err.message : String(err)));
+      setUploading(false);
+      setProgress(null);
     }
   };
 
   return (
     <div className="w-full max-w-2xl mx-auto px-4">
-      <div className="border-2 border-gray-600 rounded-lg p-8">
-        {serverStatus === 'not-running' && (
-          <div className="mb-4 p-4 bg-red-900/50 border border-red-500 rounded-lg text-center">
-            <p className="text-red-200">
-              Flask server is not running. Please start the server using:
-              <code className="block mt-2 p-2 bg-black/30 rounded">python app.py</code>
-            </p>
+      <div className="border border-slate-700 bg-slate-900/60 rounded-2xl p-6 shadow-xl backdrop-blur-sm">
+        {/* In-browser AI badge */}
+        <div className="mb-4 flex items-center justify-between text-xs px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+          <div className="flex items-center gap-1.5 font-medium">
+            <Sparkles className="w-4 h-4 text-emerald-400" />
+            <span>In-Browser AI Processing (Zero Backend Required)</span>
           </div>
-        )}
-        
+          <span className="flex items-center gap-1 text-[11px] text-emerald-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            Active
+          </span>
+        </div>
+
         <div
-          className={`relative border-2 border-dashed rounded-lg aspect-video flex flex-col items-center justify-center ${
-            dragActive ? 'border-primary-500 bg-primary-50/10' : 'border-gray-600'
+          className={`relative border-2 border-dashed rounded-xl aspect-video flex flex-col items-center justify-center transition-all ${
+            dragActive ? 'border-primary-500 bg-primary-500/10' : 'border-slate-700 hover:border-slate-600 bg-slate-950/40'
           }`}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
@@ -136,47 +119,90 @@ const UploadSection: React.FC<UploadProps> = ({ onLandmarksReceived }) => {
         >
           <input
             type="file"
-            accept="video/*"
+            accept="video/*,.txt"
             onChange={handleChange}
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-            disabled={uploading || serverStatus !== 'running'}
+            disabled={uploading}
           />
-          
+
           {uploading ? (
-            <div className="text-center">
-              <Loader2 className="mx-auto h-12 w-12 text-primary-500 animate-spin mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Processing video...</h3>
-              <p className="text-gray-400">This may take a few moments</p>
+            <div className="text-center p-6 w-full max-w-md space-y-4">
+              <Loader2 className="mx-auto h-10 w-10 text-primary-400 animate-spin" />
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-1">
+                  Extracting 3D Landmarks...
+                </h3>
+                <p className="text-xs text-slate-400">
+                  {progress?.status || 'Analyzing human motion in browser...'}
+                </p>
+              </div>
+
+              {/* Progress bar */}
+              <div className="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+                <div
+                  className="bg-primary-500 h-2.5 rounded-full transition-all duration-200"
+                  style={{ width: `${progress?.percent || 10}%` }}
+                />
+              </div>
+              <div className="flex justify-between text-[11px] font-mono text-slate-500">
+                <span>Frame {progress?.currentFrame || 0} / {progress?.totalFrames || 0}</span>
+                <span>{progress?.percent || 0}%</span>
+              </div>
             </div>
           ) : (
-            <>
-              <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Upload your video</h3>
-              <p className="text-gray-400 mb-4">
-                {serverStatus === 'running' 
-                  ? 'Drag and drop your video file here or click to browse'
-                  : 'Please start the Flask server first'
-                }
+            <div className="text-center p-6 space-y-2">
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-primary-400 shadow-inner">
+                <Upload className="h-7 w-7" />
+              </div>
+              <h3 className="text-lg font-semibold text-white">
+                Upload your video or landmark file
+              </h3>
+              <p className="text-xs text-slate-400 max-w-xs mx-auto">
+                Drag and drop MP4, WebM, MOV, or BodyLandmarks.txt here, or click to browse
               </p>
-            </>
+              <div className="pt-2 flex items-center justify-center gap-2 text-[11px] text-cyan-400">
+                <CheckCircle className="w-3.5 h-3.5" />
+                <span>Runs 100% locally on your device</span>
+              </div>
+            </div>
           )}
         </div>
 
+        {/* Quick sample test */}
+        <div className="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2">
+          <span className="text-xs text-slate-400">Don't have a video file ready?</span>
+          <button
+            type="button"
+            onClick={handleLoadSampleVideo}
+            disabled={uploading}
+            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-cyan-400 hover:text-cyan-300 border border-slate-700 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 disabled:opacity-50"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Process Sample Video (MP4)</span>
+          </button>
+        </div>
+
         {file && !uploading && (
-          <div className="mt-4 p-3 bg-gray-800 rounded-lg">
-            <p className="text-sm text-gray-300">Selected: {file.name}</p>
+          <div className="mt-4 p-3 bg-slate-800/60 border border-slate-700/60 rounded-xl flex items-center justify-between">
+            <div className="flex items-center space-x-2 text-xs text-slate-300">
+              <FileText className="w-4 h-4 text-primary-400" />
+              <span>Loaded: <strong className="text-white">{file.name}</strong></span>
+            </div>
+            <span className="text-[11px] text-slate-500">
+              {(file.size / (1024 * 1024)).toFixed(1)} MB
+            </span>
           </div>
         )}
-        
+
         {error && (
-          <div className="mt-4 p-3 bg-red-900/50 border border-red-500 rounded-lg">
-            <p className="text-sm text-red-200">{error}</p>
+          <div className="mt-4 p-3 bg-red-900/40 border border-red-500/60 rounded-xl">
+            <p className="text-xs text-red-200">{error}</p>
           </div>
         )}
-        
-        <div className="mt-4 flex items-center justify-center text-sm text-gray-400">
-          <AlertCircle className="h-4 w-4 mr-2" />
-          <span>Maximum file size: 500MB</span>
+
+        <div className="mt-4 flex items-center justify-center text-xs text-slate-500">
+          <AlertCircle className="h-3.5 w-3.5 mr-1.5" />
+          <span>Processes directly in your browser with hardware WebAssembly & WebGL acceleration</span>
         </div>
       </div>
     </div>
